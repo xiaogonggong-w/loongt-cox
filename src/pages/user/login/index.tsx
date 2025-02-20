@@ -1,29 +1,27 @@
 import {
-    AlipayCircleOutlined,
     LockOutlined,
-    MobileOutlined,
-    TaobaoCircleOutlined,
     UserOutlined,
-    WeiboCircleOutlined,
   } from '@ant-design/icons';
   import {
     LoginForm,
     ProConfigProvider,
-    ProFormCaptcha,
     ProFormCheckbox,
     ProFormText,
     setAlpha,
   } from '@ant-design/pro-components';
-  import { Space, Tabs, message, theme } from 'antd';
+  import { theme } from 'antd';
   import type { CSSProperties } from 'react';
   import { useState } from 'react';
-  
+import { Navigate, redirect, useNavigate } from 'react-router';
+import { useUserStore } from '@/store/user';
+import { useShallow } from 'zustand/shallow';
   type LoginType = 'phone' | 'account';
   
-  export default () => {
+  export default function Login() {
     const { token } = theme.useToken();
-    const [loginType, setLoginType] = useState<LoginType>('phone');
-  
+    const [loginType, setLoginType] = useState<LoginType>('account');
+    const setUserInfo = useUserStore(useShallow(state => state.setUserInfo));
+    const navigate = useNavigate();
     const iconStyles: CSSProperties = {
       marginInlineStart: '16px',
       color: setAlpha(token.colorTextBase, 0.2),
@@ -34,28 +32,32 @@ import {
   
     return (
       <ProConfigProvider hashed={false}>
-        <div style={{ backgroundColor: token.colorBgContainer }}>
+        <div className='flex-center' style={{ backgroundColor: token.colorBgContainer, width: '100%', height: '100%' }}>
           <LoginForm
-            logo="https://github.githubassets.com/favicons/favicon.png"
-            title="Github"
-            subTitle="全球最大的代码托管平台"
-            actions={
-              <Space>
-                其他登录方式
-                <AlipayCircleOutlined style={iconStyles} />
-                <TaobaoCircleOutlined style={iconStyles} />
-                <WeiboCircleOutlined style={iconStyles} />
-              </Space>
-            }
+            // logo="https://github.githubassets.com/favicons/favicon.png"
+            title="Loong-cox"
+            subTitle="最好的cox系统，没有之一"
+            containerStyle={{
+              height:"auto"
+            }}
+            onFinish={async (values) => {
+              console.log(values,'1');
+              setUserInfo({
+                name: values.username,
+                avatar: '',
+              })
+              navigate('/')
+            }}
+           
           >
-            <Tabs
+            {/* <Tabs
               centered
               activeKey={loginType}
               onChange={(activeKey) => setLoginType(activeKey as LoginType)}
             >
               <Tabs.TabPane key={'account'} tab={'账号密码登录'} />
               <Tabs.TabPane key={'phone'} tab={'手机号登录'} />
-            </Tabs>
+            </Tabs> */}
             {loginType === 'account' && (
               <>
                 <ProFormText
@@ -119,7 +121,7 @@ import {
                 />
               </>
             )}
-            {loginType === 'phone' && (
+            {/* {loginType === 'phone' && (
               <>
                 <ProFormText
                   fieldProps={{
@@ -166,7 +168,7 @@ import {
                   }}
                 />
               </>
-            )}
+            )} */}
             <div
               style={{
                 marginBlockEnd: 24,

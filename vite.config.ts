@@ -5,9 +5,13 @@ import UnoCSS from 'unocss/vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), UnoCSS()],
-  resolve:{
-    alias:{
-      "@": fileURLToPath(new URL("./src", import.meta.url))
-    }
-  }
+  server: {
+    port: 3000,
+    host: true,
+  },
+  resolve: {
+    alias: {
+      "@": fileURLToPath(new URL("./src", import.meta.url)),
+    },
+  },
 })

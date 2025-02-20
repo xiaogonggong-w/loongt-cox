@@ -13,4 +13,9 @@ export default defineConfig({
         // exclude: []
       },
     },
+    shortcuts:[
+      {
+        'flex-center': 'flex justify-center items-center',
+      }
+    ]
   })
