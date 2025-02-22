@@ -35,7 +35,7 @@ import { useShallow } from 'zustand/shallow';
         <div className='flex-center' style={{ backgroundColor: token.colorBgContainer, width: '100%', height: '100%' }}>
           <LoginForm
             // logo="https://github.githubassets.com/favicons/favicon.png"
-            title="Loong-cox"
+            title="LoongCoX"
             subTitle="最好的cox系统，没有之一"
             containerStyle={{
               height:"auto"

@@ -1,24 +1,34 @@
-import { HomeOutlined } from "@ant-design/icons"
-import { Link, useLocation } from "react-router"
-import { Breadcrumb } from "antd"
+import { Link as RouterLink, useLocation } from "react-router"
+import { Breadcrumbs as MuiBreadcrumbs, Link, Typography } from "@mui/material"
 
 export default function Breadcrumbs() {
     const location = useLocation()
-    // 根据路径获取面包屑项
-    const getBreadcrumbItems = (pathname: string) => {
-        const paths = pathname.split('/').filter(Boolean)
-        return [
-            {
-                title: <Link to="/"><HomeOutlined /> 首页</Link>
-            },
-            ...paths.map((path, index) => ({
-                title: <Link to={`/${paths.slice(0, index + 1).join('/')}`}>
-                    {path.charAt(0).toUpperCase() + path.slice(1)}
-                </Link>
-            }))
-        ]
-    }
-    return <Breadcrumb
-        items={getBreadcrumbItems(location.pathname)}
-    />
+    const pathnames = location.pathname.split('/').filter(Boolean)
+
+    return (
+        <MuiBreadcrumbs>
+            <Link component={RouterLink} to="/" color="inherit">
+                首页
+            </Link>
+            {pathnames.map((value, index) => {
+                const last = index === pathnames.length - 1
+                const to = `/${pathnames.slice(0, index + 1).join('/')}`
+
+                return last ? (
+                    <Typography color="text.primary" key={to}>
+                        {value}
+                    </Typography>
+                ) : (
+                    <Link 
+                        component={RouterLink} 
+                        to={to} 
+                        key={to} 
+                        color="inherit"
+                    >
+                        {value}
+                    </Link>
+                )
+            })}
+        </MuiBreadcrumbs>
+    )
 }

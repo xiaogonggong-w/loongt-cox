@@ -1,44 +1,46 @@
-import { Layout } from 'antd'
-import { Outlet, Navigate } from 'react-router'
+import { Outlet } from 'react-router'
 import Header from './Header'
-import Breadcrumb from './Breadcrumb'
+import { Box } from '@mui/material'
 import { useUserStore } from '@/store/user'
 import { useShallow } from 'zustand/shallow'
-const {  Footer, Content } = Layout
-
-
-
-
-export default function BasicLayout() {
-   
+export default function Layout() {
     return (
-        <AuthLayout>
-           <Layout style={{ minHeight: '100vh' }}>
+        <Box sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            minHeight: '100vh',
+        }}>
             <Header />
-            <Content style={{
-                margin: '24px 16px',
-                padding: 24,
-                background: '#fff',
-                minHeight: 280
+            {/* <Breadcrumb /> */}
+            
+            <Box sx={{
+                flex: 1,
+                padding: '24px',
+                display: 'flex',
+                flexDirection: 'column'
             }}>
-                <Breadcrumb />
                 <Outlet />
-            </Content>
-            <Footer style={{ textAlign: 'center' }}>
-                Loongtex ©{new Date().getFullYear()} Created by loongtex
-            </Footer>
-        </Layout>  
-        </AuthLayout>
+            </Box>
+            
+            <Box sx={{
+                padding: '24px',
+                textAlign: 'center',
+                background: '#fff',
+                borderTop: '1px solid #e8e8e8',
+                color: 'rgba(0, 0, 0, 0.45)',
+                fontSize: '14px'
+            }}>
+                © {new Date().getFullYear()} LoongTeX. All Rights Reserved.
+            </Box>
+        </Box>
     )
 }
-
-
 
 function AuthLayout({children}: {children: React.ReactNode}) {
     const userInfo = useUserStore(useShallow(state => state.userInfo));
     console.log(userInfo);
-    if (!userInfo) {
-        return <Navigate to="/user/login" />
-    }
+    // if (!userInfo) {
+    //     return <Navigate to="/user/login" />
+    // }
     return children
 }

@@ -10,50 +10,20 @@ const routes: RouteObject[] = [
             {
                 path: "/",
                 lazy: async () => ({
-                    Component: (await import("@/pages/Welcome")).default,
+                    Component: (await import("@/pages/mydata")).default,
                 }),
             },
             {
-                path: "/admin",
-                children: [
-                    {
-                        index: true,
-                        // element: <NavLink to="/admin/users"  />,
-                    },
-                    {
-                        path: "/admin/users",
-                        lazy: async () => ({
-                            Component: (await import("@/pages/admin/UserList")).default,
-                        }),
-                    },
-                    {
-                        path: "/admin/roles",
-                        lazy: async () => ({
-                            Component: (await import("@/pages/admin/RoleList")).default,
-                        }),
-                    },
-                ]
+                path: "/dataprocess",
+                lazy: async () => ({
+                    Component: (await import("@/pages/dataprocess")).default,
+                }),
             },
             {
-                path: "/list",  
-                children: [
-                    {
-                        index: true,
-                        // element: <NavLink to="/list/basic" />,
-                    },
-                    {
-                        path: "/list/basic",
-                        lazy: async () => ({
-                        Component: (await import("@/pages/list/BasicList")).default,
-                    }),
-                    },
-                    {
-                        path: "/list/advanced",
-                        lazy: async () => ({
-                            Component: (await import("@/pages/list/AdvancedList")).default,
-                        }),
-                    },
-                ]
+                path: "/dataanalysis",  
+                lazy: async () => ({
+                    Component: (await import("@/pages/dataanalysis")).default,
+                }),
             }
            
            
