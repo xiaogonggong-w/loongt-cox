@@ -1,9 +1,23 @@
 import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import excel from '@/assets/svg/excel.svg'
-
-
+import { useNavigate } from "react-router";
+import NiceModal from "@ebay/nice-modal-react";
+import PreviewData from "./previewDataDialog";
+import { getFileData } from "@/service/data";
 export default function DataList({files, viewMode}: {files: any[], viewMode: 'grid' | 'list'}) {
+    const navigate = useNavigate()
+
+
+    const previewData =async (file: any) => {
+        const res = await getFileData(file.id)
+        console.log(res)
+        NiceModal.show(PreviewData, {
+             header: res.headers,
+             rows: res.rows
+        })
+    }
+
     return  <Box sx={{
         display: 'flex',
         flexDirection: viewMode === 'grid' ? 'row' : 'column',
@@ -12,17 +26,17 @@ export default function DataList({files, viewMode}: {files: any[], viewMode: 'gr
     }}>
         {files.map((file) => (
             viewMode === 'grid' ? (
-                <FileItem key={file.name}>
+                <FileItem key={file.id} onClick={()=>previewData(file)}>
                     <img src={excel} alt="excel" />
-                    <div className="filename">{file.name}</div>
+                    <div className="filename">{file.filename}</div>
                 </FileItem>
             ) : (
-                <ListItem key={file.name}>
+                <ListItem key={file.id}>
                     <img src={excel} alt="excel" />
-                    <div className="filename">{file.name}</div>
+                    <div className="filename">{file.filename}</div>
                 </ListItem>
             )
-        ))}
+        ))} 
     </Box>;
 }
 

@@ -16,6 +16,15 @@ export default defineConfig({
     shortcuts:[
       {
         'flex-center': 'flex justify-center items-center',
+        'flex-between': 'flex justify-between',
+        'flex-around': 'flex justify-around',
+        'flex-evenly': 'flex justify-evenly',
+        'flex-start': 'flex justify-start',
+        'flex-col-center': 'flex  items-center',
+        'flex-1': 'flex-1',
+      },
+      {
+        'c-pointer': 'cursor-pointer',
       }
     ],
     theme: {
@@ -29,6 +38,22 @@ export default defineConfig({
         '3xl': '30px',
         '4xl': '36px',
         '5xl': '48px',
+      },
+      width: {
+        'xs': '320px',
+        'sm': '640px',
+        'md': '768px',
+        'lg': '1024px',
+        'xl': '1280px',
+        '2xl': '1536px',
+        'full': '100%',
+        'half': '50%',
+        'screen': '100vw',
+      },
+      height:{
+        'full': '100%',
+        'half': '50%',
+        'screen': '100vh',
       }
     },
     rules:[
@@ -79,5 +104,23 @@ export default defineConfig({
 
        // dynamic font size
        [/^text-(\d+)$/, ([, d]) => ({ 'font-size': `${d}px` })],
+
+      // 基础边框线 - 使用 --border-color 作为默认颜色
+      [/^border$/, () => ({ 'border': '1px solid var(--border-color, #e5e7eb)' })],
+      [/^border-(t|r|b|l)$/, ([, d]) => {
+        const directions = {
+          t: 'top',
+          r: 'right',
+          b: 'bottom',
+          l: 'left'
+        }
+        return { [`border-${directions[d]}`]: '1px solid var(--border-color, #e5e7eb)' }
+      }],
+
+      // 边框宽度
+      [/^border-(\d+)$/, ([, d]) => ({ 'border-width': `${d}px` })],
+
+      // 边框颜色 - 使用更具体的匹配模式
+      [/^border-(primary|success|warning|danger|info|light|dark)$/, ([, c]) => ({ 'border-color': `var(--${c})` })],
     ]
   })

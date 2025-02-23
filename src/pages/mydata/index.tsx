@@ -1,8 +1,12 @@
 import { Box, Button, Icon, IconButton, InputBase, Paper, ToggleButton, ToggleButtonGroup, toggleButtonGroupClasses } from '@mui/material'
 import { GridViewRounded, ListRounded, Search as SearchIcon } from '@mui/icons-material'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { styled } from '@mui/material/styles'
 import DataList from './components/dataList'
+import { uploadData, getDatas } from '@/service/data'
+import { Scrollbars } from '@/components/scrollbars'
+import NiceModal from '@ebay/nice-modal-react'
+import PreviewData from './components/previewDataDialog'
 // 自定义样式组件
 const SearchBox = styled(Paper)(({ theme }) => ({
     padding: '2px 4px',
@@ -34,54 +38,86 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
     },
 }))
 
+const VisuallyHiddenInput = styled('input')({
+    clip: 'rect(0 0 0 0)',
+    clipPath: 'inset(50%)',
+    height: 1,
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    whiteSpace: 'nowrap',
+    width: 1,
+});
+
+
 export default function LocalData() {
     const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
     const [searchText, setSearchText] = useState('')
-
+    const [files, setFiles] = useState<any[]>([])
     const handleChange = (event: React.MouseEvent<HTMLElement>, newViewMode: 'grid' | 'list') => {
         setViewMode(newViewMode);
     };
 
-    const files = [
-        { name: '工作簿1.xlsx', type: 'excel' },
-        { name: '示例数据-青少年体质数据.csv', type: 'excel' },
-        { name: '示例数据-房地产数据.csv', type: 'excel' }
-    ]
+
+
+    const uploadFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0]
+        if (file) {
+            console.log(file)
+            const formData = new FormData()
+            formData.append('file', file)
+            const res = await uploadData(formData)
+            console.log(res)
+            NiceModal.show(PreviewData, {
+                header: res.headers,
+                rows: res.rows
+            })
+        }
+    }
+
+    useEffect(() => {
+       
+        getDatas().then(res => {
+            console.log(res)
+            setFiles(res)
+        })
+    }, [])
 
     return (
-        <Box sx={{ padding: 2 }}>
+        <Box sx={{ padding: 2 }} className='w-full'>
             {/* 顶部工具栏 */}
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                   <Paper
-                     elevation={0}
-                     sx={(theme) => ({
-                       display: 'flex',
-                       border: `1px solid ${theme.palette.divider}`,
-                       flexWrap: 'wrap',
-                     })}
-                   >
-                   <StyledToggleButtonGroup
-                        onChange={handleChange}
-                        value={viewMode}
-                        exclusive
+                    <Paper
+                        elevation={0}
+                        sx={(theme) => ({
+                            display: 'flex',
+                            border: `1px solid ${theme.palette.divider}`,
+                            flexWrap: 'wrap',
+                        })}
                     >
-                        <ToggleButton
-                            value="grid"
-                            size="small"
-                            aria-label="grid"
+                        <StyledToggleButtonGroup
+                            onChange={handleChange}
+                            value={viewMode}
+                            exclusive
                         >
-                            <GridViewRounded />
-                        </ToggleButton>
-                        <ToggleButton
-                            value="list"
-                            size="small"
-                            aria-label="list"
-                        >
-                            <ListRounded />
-                        </ToggleButton>
-                    </StyledToggleButtonGroup>
-                   </Paper>
+                            <ToggleButton
+                                value="grid"
+                                size="small"
+                                aria-label="grid"
+                            >
+                                <GridViewRounded />
+                            </ToggleButton>
+                            <ToggleButton
+                                value="list"
+                                size="small"
+                                aria-label="list"
+                            >
+                                <ListRounded />
+                            </ToggleButton>
+                        </StyledToggleButtonGroup>
+                    </Paper>
                 </Box>
 
                 <SearchBox sx={{ ml: 2 }}>
@@ -90,7 +126,7 @@ export default function LocalData() {
                         color: '#666',
                         transform: 'scale(0.6)'
                     }}>
-                        <SearchIcon/>
+                        <SearchIcon />
                     </Icon>
                     <InputBase
                         sx={{ ml: 1, flex: 1, fontSize: 12 }}
@@ -104,15 +140,24 @@ export default function LocalData() {
                     共 {files.length} 份数据
                 </Box>
                 <Box className='ml-auto'>
-                    <Button variant="outlined" color="primary" className='w-100 h-34 ' >
+                    <Button component="label" variant="outlined" color="primary" className='w-100 h-34 ' >
                         上传数据
+                        <VisuallyHiddenInput
+                            type="file"
+                            onChange={uploadFile}
+                            multiple
+                        />
                     </Button>
                 </Box>
             </Box>
 
             {/* 文件列表 */}
             <Box className='mt-2'></Box>
-            <DataList files={files} viewMode={viewMode} />
+            <Scrollbars style={{
+                height: 'calc(100vh - 130px)',
+            }}>
+                <DataList files={files} viewMode={viewMode} />
+            </Scrollbars>
         </Box>
     )
 }

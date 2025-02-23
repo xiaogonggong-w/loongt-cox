@@ -22,10 +22,25 @@ const routes: RouteObject[] = [
             {
                 path: "/dataanalysis",  
                 lazy: async () => ({
-                    Component: (await import("@/pages/dataanalysis")).default,
+                    Component: (await import("@/pages/dataanalysis/index")).default,
                 }),
-            }
-           
+                children:[
+                    {
+                        index: true,
+                        lazy: async () => ({
+                            Component: (await import("@/pages/dataanalysis/project/index")).default,
+                        }),
+                    },
+
+                    {
+                        path: "/dataanalysis/operation/:id",
+                        lazy: async () => ({
+                            Component: (await import("@/pages/dataanalysis/operation/index")).default,
+                        }),
+                    }
+                ]
+            },
+          
            
 
         ],

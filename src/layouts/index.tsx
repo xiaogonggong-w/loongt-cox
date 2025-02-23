@@ -13,16 +13,11 @@ export default function Layout() {
             <Header />
             {/* <Breadcrumb /> */}
             
-            <Box sx={{
-                flex: 1,
-                padding: '24px',
-                display: 'flex',
-                flexDirection: 'column'
-            }}>
+            <Box className="flex flex-1">
                 <Outlet />
             </Box>
             
-            <Box sx={{
+            {/* <Box sx={{
                 padding: '24px',
                 textAlign: 'center',
                 background: '#fff',
@@ -31,7 +26,7 @@ export default function Layout() {
                 fontSize: '14px'
             }}>
                 © {new Date().getFullYear()} LoongTeX. All Rights Reserved.
-            </Box>
+            </Box> */}
         </Box>
     )
 }

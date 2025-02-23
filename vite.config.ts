@@ -8,10 +8,18 @@ export default defineConfig({
   server: {
     port: 3000,
     host: true,
+    proxy: {
+      '/datas': {
+        target: 'http://39.99.42.82:8002',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/datas/, ''),
+      },
+    },
   },
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
   },
+  
 })
