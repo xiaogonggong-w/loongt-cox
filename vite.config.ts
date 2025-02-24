@@ -14,6 +14,11 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/datas/, ''),
       },
+      '/algorithms': {
+        target: 'http://39.99.42.82:8002',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/algorithms/, ''),
+      },
     },
   },
   resolve: {

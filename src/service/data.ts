@@ -14,3 +14,7 @@ export const getFileData = (id: string) => {
   return request.get(`/datas/detail/${id}/`);
 };
 
+// 获取算法
+export const getAlgorithms = () => {
+  return request.get('/algorithms/list/');
+};

@@ -3,12 +3,14 @@ import { useParams } from "react-router";
 import { Scrollbars } from "@/components/scrollbars";
 import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
-import { SyntheticEvent } from "react";
-
+import { SyntheticEvent, useEffect, useState } from "react";
+import { getAlgorithms } from "@/service/data";
+import { nanoid } from "nanoid";
 
 export default function Operation() {
 
     const { id } = useParams();
+    const [algorithms, setAlgorithms] = useState([]);
 
     const SimpleTreeViewStyled = styled(SimpleTreeView)(() => ({
         '& .MuiTreeItem-root': {
@@ -30,6 +32,12 @@ export default function Operation() {
         console.log(itemIds);
     }
 
+    useEffect(() => {
+        getAlgorithms().then(res => {
+            setAlgorithms(res.data);
+        })
+    }, [])  
+
     return <div className="w-full flex-start flex-1 p-20">
         <div className="w-220 border-r  ">
             <div className="px-10 h-40 h-40 flex-col-center text-14">
@@ -40,27 +48,20 @@ export default function Operation() {
             <div className="mx-10 h-40 flex-col-center border-b text-14">
                 选择算法
             </div>
-            <Scrollbars>
+            <Scrollbars
+                style={{height: 'calc(100vh - 144px)'}}
+            >
                 <SimpleTreeViewStyled 
                   onSelectedItemsChange={onSelectedItemsChange}
                   onItemClick={onItemClick}
                 >
-                    <TreeItemStyled itemId="grid" label="Data Grid">
-                        <TreeItemStyled itemId="grid-community" label="@mui/x-data-grid" />
-                        <TreeItemStyled itemId="grid-pro" label="@mui/x-data-grid-pro" />
-                        <TreeItemStyled itemId="grid-premium" label="@mui/x-data-grid-premium" />
-                    </TreeItemStyled>
-                    <TreeItemStyled itemId="pickers" label="Date and Time Pickers">
-                        <TreeItemStyled itemId="pickers-community" label="@mui/x-date-pickers" />
-                        <TreeItemStyled itemId="pickers-pro" label="@mui/x-date-pickers-pro" />
-                    </TreeItemStyled>
-                    <TreeItemStyled itemId="charts" label="Charts">
-                        <TreeItemStyled itemId="charts-community" label="@mui/x-charts" />
-                    </TreeItemStyled>
-                    <TreeItemStyled itemId="tree-view" label="Tree View">
-                        <TreeItemStyled itemId="tree-view-community" label="@mui/x-tree-view" />
-                    </TreeItemStyled>
-                    
+                    {algorithms.map((item: any) => (
+                        <TreeItemStyled itemId={nanoid()} label={item.category_name} >
+                            {item.algorithms.map((algorithm: any) => (
+                                <TreeItemStyled itemId={nanoid()} label={algorithm.algorithm_name} />
+                            ))}
+                        </TreeItemStyled>
+                    ))}
                 </SimpleTreeViewStyled>
             </Scrollbars>
         </div>
