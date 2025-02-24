@@ -2,9 +2,9 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { fileURLToPath, URL } from 'url'
 import UnoCSS from 'unocss/vite'
-// https://vite.dev/config/
+import svgr from 'vite-plugin-svgr'
 export default defineConfig({
-  plugins: [react(), UnoCSS()],
+  plugins: [ UnoCSS(),react(), svgr()],
   server: {
     port: 3000,
     host: true,

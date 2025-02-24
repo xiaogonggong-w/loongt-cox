@@ -54,6 +54,10 @@ export default defineConfig({
         'full': '100%',
         'half': '50%',
         'screen': '100vh',
+      },
+      colors: {
+         '1f':"#1f1f1f", 
+         'theme':"#008858",
       }
     },
     rules:[

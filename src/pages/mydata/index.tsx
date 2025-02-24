@@ -7,6 +7,7 @@ import { uploadData, getDatas } from '@/service/data'
 import { Scrollbars } from '@/components/scrollbars'
 import NiceModal from '@ebay/nice-modal-react'
 import PreviewData from './components/previewDataDialog'
+import { PrimaryButton } from '@/components/Styled/Button'
 // 自定义样式组件
 const SearchBox = styled(Paper)(({ theme }) => ({
     padding: '2px 4px',
@@ -77,7 +78,7 @@ export default function LocalData() {
     }
 
     useEffect(() => {
-       
+
         getDatas().then(res => {
             console.log(res)
             setFiles(res)
@@ -85,10 +86,9 @@ export default function LocalData() {
     }, [])
 
     return (
-        <Box sx={{ padding: 2 }} className='w-full'>
-            {/* 顶部工具栏 */}
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Box className='w-full flex flex-col'>
+            <Box className="flex-between h-80 flex-col-center px-32">
+                {/* <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                     <Paper
                         elevation={0}
                         sx={(theme) => ({
@@ -118,44 +118,50 @@ export default function LocalData() {
                             </ToggleButton>
                         </StyledToggleButtonGroup>
                     </Paper>
+                </Box> */}
+                <Box className="text-1f">
+                    本地数据 <span className="text-theme">({files.length})</span>
                 </Box>
-
-                <SearchBox sx={{ ml: 2 }}>
-                    <Icon baseClassName='search-icon' sx={{
-                        width: 16,
-                        color: '#666',
-                        transform: 'scale(0.6)'
-                    }}>
-                        <SearchIcon />
-                    </Icon>
-                    <InputBase
-                        sx={{ ml: 1, flex: 1, fontSize: 12 }}
-                        placeholder="搜索文件名称"
-                        value={searchText}
-                        onChange={(e) => setSearchText(e.target.value)}
-                    />
-                </SearchBox>
-
-                <Box sx={{ ml: 2, color: '#666' }}>
-                    共 {files.length} 份数据
-                </Box>
-                <Box className='ml-auto'>
-                    <Button component="label" variant="outlined" color="primary" className='w-100 h-34 ' >
-                        上传数据
-                        <VisuallyHiddenInput
-                            type="file"
-                            onChange={uploadFile}
-                            multiple
+                <Box className="flex " sx={{ gap: '24px' }}>
+                    {/* <SearchBox sx={{ ml: 2 }}>
+                        <Icon baseClassName='search-icon' sx={{
+                            width: 16,
+                            color: '#666',
+                            transform: 'scale(0.6)'
+                        }}>
+                            <SearchIcon />
+                        </Icon>
+                        <InputBase
+                            sx={{ ml: 1, flex: 1, fontSize: 12 }}
+                            placeholder="搜索文件名称"
+                            value={searchText}
+                            onChange={(e) => setSearchText(e.target.value)}
                         />
-                    </Button>
+                    </SearchBox> */}
+
+
+                    <Box className='ml-auto'>
+                        <PrimaryButton component="label" variant="contained" 
+                         sx={{
+                            backgroundColor:"#008858"
+                         }}
+                        className='w-100 h-34 ' >
+                            上传数据
+                            <VisuallyHiddenInput
+                                type="file"
+                                onChange={uploadFile}
+                                multiple
+                            />
+                        </PrimaryButton>
+                    </Box>
                 </Box>
             </Box>
 
-            {/* 文件列表 */}
-            <Box className='mt-2'></Box>
-            <Scrollbars style={{
-                height: 'calc(100vh - 130px)',
-            }}>
+            <Scrollbars
+                style={{
+                    height: 'calc(100vh - 144px)',
+                }}
+            >
                 <DataList files={files} viewMode={viewMode} />
             </Scrollbars>
         </Box>

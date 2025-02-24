@@ -1,12 +1,9 @@
-import { Dialog, DialogTitle, DialogContent, Box, Typography, DialogActions, Button } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, Box, Typography, DialogActions, Button, styled } from "@mui/material";
 import NiceModal, { muiDialogV5, useModal } from '@ebay/nice-modal-react';
 import Excel from "@/components/excel";
+import { PrimaryButton } from "@/components/Styled/Button";
 
-
-
-
-
-function PreviewData({header, rows}:{header:any[], rows:any[]}) {
+function PreviewData({ header, rows }: { header: any[], rows: any[] }) {
     const modal = useModal()
     return <Dialog
         {...muiDialogV5(modal)}
@@ -17,7 +14,7 @@ function PreviewData({header, rows}:{header:any[], rows:any[]}) {
                 height: '666px',
             },
         }}
-       
+
     >
         <DialogTitle sx={{
             fontSize: '14px',
@@ -29,17 +26,19 @@ function PreviewData({header, rows}:{header:any[], rows:any[]}) {
             <Excel header={header} rows={rows}></Excel>
         </DialogContent>
         <DialogActions
-           sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-           }}   
+            sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+            }}
         >
-            <Button type="button" variant="outlined" color="primary" onClick={() => modal.hide()}>确定</Button>
-           <Box className="flex-center gap-2">
-            <Button type="button" variant="outlined" color="primary" onClick={() => modal.hide()}>去处理</Button>
-            <Button type="button" variant="outlined" color="primary" onClick={() => modal.hide()}>去分析</Button>
-              
-           </Box>
+            <PrimaryButton type="button" variant="outlined" onClick={() => modal.hide()}>确定</PrimaryButton>
+            <Box className="flex-center gap-2">
+                <Button type="button" variant="outlined"
+
+                    onClick={() => modal.hide()}>去处理</Button>
+                <Button type="button" variant="outlined" color="primary" onClick={() => modal.hide()}>去分析</Button>
+
+            </Box>
         </DialogActions>
     </Dialog>
 }
